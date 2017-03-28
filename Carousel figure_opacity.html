@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>轮播</title>
+    <style>
+        body, div, ul, li {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        body {
+            background: #000;
+            text-align: center;
+            font: 12px/20px Arial;
+        }
+
+        #box {
+            position: relative;
+            width: 492px;
+            height: 172px;
+            background: #fff;
+            border-radius: 5px;
+            border: 8px solid #fff;
+            margin: 10px auto;
+        }
+
+        #box .list {
+            position: relative;
+            width: 490px;
+            height: 170px;
+            overflow: hidden;
+            border: 1px solid #ccc;
+        }
+
+        #box .list li {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 490px;
+            height: 170px;
+            opacity: 0;
+            transition: opacity 0.5s linear
+        }
+
+        img {
+            width: 490px;
+            height: 170px;
+        }
+
+        #box .list li.current {
+            opacity: 1;
+        }
+
+        #box .count {
+            position: absolute;
+            right: 0;
+            bottom: 5px;
+        }
+
+        #box .count li {
+            color: #fff;
+            float: left;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            margin-right: 5px;
+            overflow: hidden;
+            background: #F90;
+            opacity: 0.7;
+            border-radius: 20px;
+        }
+
+        #box .count li.current {
+            color: #fff;
+            opacity: 0.7;
+            font-weight: 700;
+            background: #f60
+        }
+    </style>
+</head>
+<body>
+<div id="box">
+    <ul class="list">
+        <li class="current"><img src="img/1.jpg"></li>
+        <li><img src="img/2.jpg"></li>
+        <li><img src="img/3.jpg"></li>
+    </ul>
+    <ul class="count">
+        <li class="current">1</li>
+        <li class="">2</li>
+        <li class="">3</li>
+    </ul>
+</div>
+<script>
+    var box = document.getElementById('box');
+    var ul = document.getElementsByTagName('ul');
+    var img = ul[0].getElementsByTagName('li');
+    var btn = ul[1].getElementsByTagName('li');
+    var i = index = 0;
+    var play = null;
+
+    function show(a) {
+        for (i = 0; i < btn.length; i++) {
+            btn[i].className = '';
+            btn[a].className = 'current';
+        }
+        for (i = 0; i < img.length; i++) {
+            img[i].style.opacity = 0;
+            img[a].style.opacity = 1;
+        }
+    }
+    for (i = 0; i < btn.length; i++) {
+        btn[i].onmouseover = (function (j) {
+            return function () {
+                show(j);
+                clearInterval(play);
+            }
+        })(i)
+    }
+    function autoPlay() {
+        play = setInterval(function () {
+            index++;
+            index >= img.length && (index = 0);
+            show(index);
+        }, 1000)
+    }
+    autoPlay();
+    box.onmouseover = function () {
+        clearInterval(play);
+    };
+    box.onmouseout = function () {
+        autoPlay();
+    };
+
+
+</script>
+</body>
+</html>

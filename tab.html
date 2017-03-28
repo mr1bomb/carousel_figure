@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tab</title>
+    <style>
+        #list {
+            background-color:blue;
+        }
+
+        .tab {
+            display: inline-block;
+            padding: 12px;
+            margin-right: -2px;
+        }
+
+        #content {
+            list-style-type: none;
+        }
+
+        .tab_img {
+            display: none;
+        }
+        img{
+            width: 400px;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+<ul id="list">
+    <li class="tab">科比1</li>
+    <li class="tab">科比2</li>
+    <li class="tab">科比3</li>
+</ul>
+<ul id="content">
+    <li><img src="img/1.jpg">
+        <p>科比1</p></li>
+    <li class="tab_img"><img src="img/2.jpg">
+        <p>科比2</p></li>
+    <li class="tab_img"><img src="img/3.jpg">
+        <p>科比3</p></li>
+</ul>
+<script>
+    window.onload = function () {
+        var list = document.getElementById("list");
+        var content = document.getElementById("content");
+        var tab = list.getElementsByTagName("li");
+        var tab_img = content.getElementsByTagName("li");
+        for (var i = 0; i < tab.length; i++) {
+            tab[i].index=i;
+            tab[i].onclick = function () {
+                for (var j = 0; j < tab.length; j++) {
+                    tab[j].style.backgroundColor = "blue";
+                    tab_img[j].className = "tab_img";
+                }
+                tab[this.index].style.backgroundColor = "red";
+                tab_img[this.index].className ='';
+            }
+        }
+    }
+</script>
+</body>
+</html>

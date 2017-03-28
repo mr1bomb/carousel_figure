@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+        }
+
+
+        #container {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            border: 3px solid #333;
+            overflow: hidden;
+        }
+
+        #list {
+            position: absolute;
+            z-index: 1;
+            width: 3000px;
+            height: 400px;
+        }
+
+        #list img {
+            float: left;
+            width: 600px;
+            height: 400px;
+        }
+
+        #buttons {
+            position: absolute;
+            left: 250px;
+            bottom: 20px;
+            z-index: 2;
+            height: 10px;
+            width: 100px;
+        }
+
+        #buttons span {
+            float: left;
+            margin-right: 5px;
+            width: 10px;
+            height: 10px;
+            border: 1px solid #fff;
+            border-radius: 50%;
+            background: #333;
+            cursor: pointer;
+        }
+
+        #buttons .on {
+            background: orangered;
+        }
+
+        .arrow {
+            position: absolute;
+            top: 180px;
+            z-index: 2;
+            display: none;
+            width: 40px;
+            height: 40px;
+            font-size: 36px;
+            font-weight: bold;
+            line-height: 39px;
+            text-align: center;
+            color: #fff;
+            background-color: RGBA(0, 0, 0, .3);
+            cursor: pointer;
+        }
+
+        .arrow:hover {
+            background-color: RGBA(0, 0, 0, .7);
+        }
+
+        #container:hover .arrow {
+            display: block;
+        }
+
+        #prev {
+            left: 20px;
+        }
+
+        #next {
+            right: 20px;
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <div id="list" style="left: -600px;">
+        <img src="img/3.jpg" alt="1" />
+        <img src="img/1.jpg" alt="1" />
+        <img src="img/2.jpg" alt="2" />
+        <img src="img/3.jpg" alt="3" />
+        <img src="img/1.jpg" alt="4" />
+
+    </div>
+    <div id="buttons">
+        <span index="0" class="on"></span>
+        <span index="1"></span>
+        <span index="2"></span>
+    </div>
+    <a id="prev" class="arrow">&lt;</a>
+    <a  id="next" class="arrow">&gt;</a>
+</div>
+<script>
+    window.onload = function() {
+        var list = document.getElementById('list');
+        var prev = document.getElementById('prev');
+        var next = document.getElementById('next');
+        var timer;
+
+        function animate(offset) {
+            //获取的是style.left，是相对左边获取距离，所以第一张图后style.left都为负值，
+            //且style.left获取的是字符串，需要用parseInt()取整转化为数字。
+            var newLeft = parseInt(list.style.left) + offset;
+            list.style.left = newLeft + 'px';
+            if (newLeft < -2400) {
+                list.style.left = -1200 + 'px';
+            }
+            if (newLeft > 0) {
+                list.style.left = -1200 + 'px';
+            }
+        }
+
+
+
+    function play() {
+        timer = setInterval(function () {
+            next.onclick()
+        }, 1500)
+    }
+
+    play();
+    var container = document.getElementById('container');
+
+    function stop() {
+        clearInterval(timer);
+    }
+
+    container.onmouseover = stop;
+    container.onmouseout = play;
+
+    var buttons = document.getElementById('buttons').getElementsByTagName('span');
+    var index = 0;
+
+    function buttonsShow() {
+
+        for (var i = 0; i < buttons.length; i++) {
+            if (buttons[i].className == 'on') {
+                buttons[i].className = '';
+            }
+        }
+        buttons[index].className = 'on';
+    }
+
+    prev.onclick = function() {
+        index -= 1;
+        if (index < 0) {
+            index = 2;
+        }
+        buttonsShow();
+        animate(600);
+    };
+    next.onclick = function() {
+        index += 1;
+        if (index > 2) {
+            index = 0;
+        }
+        buttonsShow();
+        animate(-600);
+    };
+
+        for (var i = 0; i < buttons.length; i++) {
+            (function(i) {
+                buttons[i].onclick = function() {
+                    var clickIndex = parseInt(this.getAttribute('index'));
+                    var offset = 600 * (index - clickIndex);
+                    animate(offset);
+                    index = clickIndex;
+                    buttonsShow();
+                }
+            })(i)
+        }
+    }
+</script>
+</body>
+</html>
